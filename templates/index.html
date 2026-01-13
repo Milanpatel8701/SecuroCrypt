@@ -192,6 +192,81 @@ overflow: hidden;
             .help-layout { flex-direction: column; }
             .help-sidebar { flex: 0 0 auto; height: 180px; border-right: none; border-bottom: 1px solid var(--border); }
         }
+	
+	.custom-select {
+   	 position: relative;
+   	 user-select: none;
+   	 z-index: 20;
+	}
+
+
+.custom-select .selected {
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: rgba(0,0,0,0.35);
+    color: #fff;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.custom-select .selected::after {
+    content: "▾";
+    float: right;
+    color: var(--accent-cyan);
+}
+
+.custom-select .selected:hover {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 12px rgba(0,242,255,0.3);
+}
+
+.custom-select.open .selected {
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 15px rgba(157,80,187,0.4);
+}
+
+/* Dropdown list */
+.custom-select .options {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    background: rgba(10,10,20,0.95);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    backdrop-filter: blur(20px);
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.35s var(--transition);
+    z-index: 50;
+}
+
+.custom-select.open .options {
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+/* Options */
+.custom-select .options div {
+    padding: 12px 15px;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.custom-select .options div:hover {
+    background: rgba(0,242,255,0.1);
+    color: var(--accent-cyan);
+}
+
+.custom-select .options div.active {
+    background: rgba(157,80,187,0.15);
+    color: #fff;
+    font-weight: 600;
+}
     </style>
 </head>
 <body>
@@ -348,7 +423,7 @@ overflow: hidden;
         async function execute(mode) {
             const input = document.getElementById('terminalInput').value;
             const key = document.getElementById('terminalKey').value;
-            const cipher = document.getElementById('cipherSelect').value;
+            const cipher = selectedCipher;
             const output = document.getElementById('terminalOutput');
 
             if (!input) {
@@ -386,6 +461,34 @@ overflow: hidden;
                 e.preventDefault();
             }
         });
+// ---------- Custom Dropdown Logic ----------
+const dropdown = document.querySelector('.custom-select');
+const selected = dropdown.querySelector('.selected');
+const options = dropdown.querySelectorAll('.options div');
+
+let selectedCipher = selected.innerText;
+
+selected.addEventListener('click', () => {
+    dropdown.classList.toggle('open');
+});
+
+options.forEach(option => {
+    option.addEventListener('click', () => {
+        options.forEach(o => o.classList.remove('active'));
+        option.classList.add('active');
+        selected.innerText = option.innerText;
+        selectedCipher = option.innerText;
+        dropdown.classList.remove('open');
+    });
+});
+
+// Close on outside click
+document.addEventListener('click', e => {
+    if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+    }
+});
+
     </script>
 </body>
 </html>
