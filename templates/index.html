@@ -235,21 +235,26 @@ overflow: hidden;
                 <input type="text" id="terminalKey" class="key-input" placeholder="Variable key...">
             </div>
             <div class="input-group">
-                <label>Cipher Selection</label>
-                <select id="cipherSelect">
-                    <option>Caesar Cipher</option>
-                    <option>Monoalphabetic Cipher</option>
-                    <option>Polyalphabetic Cipher</option>
-                    <option>Vigenère Cipher</option>
-                    <option>Playfair Cipher</option>
-                    <option>Hill Cipher</option>
-                    <option>Rail Fence Cipher</option>
-                    <option>Transposition Cipher</option>
-                    <option>Columnar Transposition Cipher</option>
-                    <option>One-Time Pad</option>
-                    <option>Homophonic Cipher</option>
-                </select>
+   	    <label>Cipher Selection</label>
+
+  	    <div class="custom-select" id="cipherSelect">
+            <div class="selected">Caesar Cipher</div>
+            <div class="options">
+            	<div class="active">Caesar Cipher</div>
+            	<div>Monoalphabetic Cipher</div>
+            	<div>Polyalphabetic Cipher</div>
+            	<div>Vigenère Cipher</div>
+            	<div>Playfair Cipher</div>
+            	<div>Hill Cipher</div>
+            	<div>Rail Fence Cipher</div>
+            	<div>Transposition Cipher</div>
+            	<div>Columnar Transposition Cipher</div>
+            	<div>One-Time Pad</div>
+            	<div>Homophonic Cipher</div>
             </div>
+          </div>
+
+         </div>
             <div class="actions">
                 <button class="btn btn-primary" onclick="execute('Encrypt')">Encrypt</button>
                 <button class="btn btn-secondary" onclick="execute('Decrypt')">Decrypt</button>
