@@ -120,7 +120,7 @@ overflow: hidden;
         .slogan { color: var(--text-dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; }
 
         /* ------------------ Right Tool Panel ------------------ */
-        .main-workspace { flex: 1; padding: 40px; background: var(--panel-bg); display: flex; flex-direction: column; justify-content: center; }
+        .main-workspace { flex: 1; padding: 40px; background: var(--panel-bg); display: flex; flex-direction: column; justify-content: flex-start; overflow-y: auto; max-height: 100%; }
         .workspace-title { color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 2px; font-size: 0.7rem; margin-bottom: 25px; font-weight: 600; }
         .input-group { margin-bottom: 20px; }
         .input-group label { display: block; font-size: 0.6rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600; }
@@ -148,6 +148,7 @@ overflow: hidden;
         .help-sidebar {
             flex: 0 0 280px; border-right: 1px solid var(--border);
             padding: 30px 20px; overflow-y: auto; display: flex; flex-direction: column;
+	    overflow-y: auto;
         }
 
         .help-sidebar h3 { font-size: 0.7rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; padding-left: 10px; }
@@ -161,7 +162,7 @@ overflow: hidden;
         .cipher-nav-btn:hover { background: rgba(255,255,255,0.05); color: #fff; }
         .cipher-nav-btn.active { background: rgba(0, 242, 255, 0.1); color: var(--accent-cyan); font-weight: 600; }
 
-        .help-main { flex: 1; padding: 60px; position: relative; display: flex; flex-direction: column; justify-content: center; }
+        .help-main { flex: 1; padding: 60px; position: relative; display: flex; flex-direction: column; justify-content: flex-start; overflow-y: auto; }
 
         .close-btn {
             position: absolute; top: 30px; right: 40px; cursor: pointer;
