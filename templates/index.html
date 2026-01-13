@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SecuroCrypt | Unified Terminal</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,32 +23,33 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.03) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(157, 80, 187, 0.03) 0%, transparent 40%);
-            color: var(--text-main);
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden;
+    background-color: var(--bg-color);
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.03) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(157, 80, 187, 0.03) 0%, transparent 40%);
+    color: var(--text-main);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;   /* ensures container always centered */
+overflow: hidden; 
         }
 
         .app-container {
-            display: flex;
-            width: 95vw;
-            max-width: 950px; 
-            height: 80vh;
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid var(--border);
-            border-radius: 35px;
-            backdrop-filter: blur(25px);
-            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.9);
-            overflow: hidden;
-            position: relative;
-            animation: containerEntry 0.8s var(--transition);
+           display: flex;
+    width: 100%;          /* use full available width */
+    max-width: 950px;     /* keep your max width */
+    height: 80vh;         /* keep your height */
+    max-height: 700px;    /* optional: limit max height to fit screen */
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid var(--border);
+    border-radius: 35px;
+    backdrop-filter: blur(25px);
+    box-shadow: 0 50px 100px rgba(0, 0, 0, 0.9);
+    overflow: hidden;
+    position: relative;
+    animation: containerEntry 0.8s var(--transition);
         }
 
         @keyframes containerEntry {
@@ -369,9 +370,16 @@
             }
         }
 
-        window.onkeydown = function(e) {
+        // ------------------ Key Handling ------------------
+        window.addEventListener('keydown', function(e) {
+            // Close help overlay on Escape
             if (e.key === "Escape") helpOverlay.style.display = 'none';
-        }
+
+            // Prevent zoom in/out
+            if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=')) {
+                e.preventDefault();
+            }
+        });
     </script>
 </body>
 </html>
