@@ -54,5 +54,5 @@ def process():
     except Exception as e:
         return jsonify({'error':str(e)})
 
-app = Flask(__name__)
+
 
