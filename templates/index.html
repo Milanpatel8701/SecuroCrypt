@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecuroCrypt | Unified Terminal</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #050508;
+            --panel-bg: rgba(18, 18, 30, 0.85);
+            --accent-cyan: #00f2ff;
+            --accent-purple: #9d50bb;
+            --text-main: #ffffff;
+            --text-dim: #88889a;
+            --border: rgba(255, 255, 255, 0.08);
+            --transition: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(157, 80, 187, 0.03) 0%, transparent 40%);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            width: 95vw;
+            max-width: 950px; 
+            height: 80vh;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border);
+            border-radius: 35px;
+            backdrop-filter: blur(25px);
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.9);
+            overflow: hidden;
+            position: relative;
+            animation: containerEntry 0.8s var(--transition);
+        }
+
+        @keyframes containerEntry {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ------------------ Left Branding Panel ------------------ */
+        .sidebar {
+            flex: 0 0 320px;
+            background: rgba(10, 10, 18, 0.5);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            position: relative;
+            text-align: center;
+        }
+
+        .help-trigger {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: 0.3s;
+            z-index: 10;
+        }
+
+        .help-trigger:hover {
+            background: var(--accent-cyan);
+            color: #000;
+            box-shadow: 0 0 15px var(--accent-cyan);
+        }
+
+        .logo-shield {
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex; align-items: center; justify-content: center;
+            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.3));
+            margin-bottom: 20px;
+        }
+
+        .logo-inner {
+            width: 62px; height: 62px; background: #0a0a14;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .logo-core { width: 20px; height: 20px; background: white; border-radius: 4px; transform: rotate(45deg); animation: corePulse 2s infinite alternate; }
+
+        @keyframes corePulse { from { opacity: 0.4; transform: rotate(45deg) scale(0.8); } to { opacity: 1; transform: rotate(45deg) scale(1.1); } }
+
+        .brand-name { font-size: 1.8rem; font-weight: 600; margin: 0; background: linear-gradient(to bottom, #fff, #888); background-clip: text; -webkit-text-fill-color: transparent; }
+        .slogan { color: var(--text-dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; }
+
+        /* ------------------ Right Tool Panel ------------------ */
+        .main-workspace { flex: 1; padding: 40px; background: var(--panel-bg); display: flex; flex-direction: column; justify-content: center; }
+        .workspace-title { color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 2px; font-size: 0.7rem; margin-bottom: 25px; font-weight: 600; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 0.6rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600; }
+        textarea, input, select { width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0, 0, 0, 0.3); color: #fff; font-family: 'Poppins', sans-serif; font-size: 0.85rem; transition: 0.3s; }
+        textarea { height: 100px; resize: none; font-family: 'Fira Code', monospace; }
+        .key-input { width: 45%; }
+        .actions { display: flex; gap: 12px; margin: 10px 0 25px; }
+        .btn { flex: 1; padding: 14px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); color: #000; }
+        .btn-secondary { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border); }
+        .output-screen { background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 15px; font-family: 'Fira Code', monospace; color: var(--accent-cyan); font-size: 0.85rem; min-height: 60px; word-break: break-all; overflow-y: auto; max-height: 120px;}
+
+        /* ------------------ Floating Help Panel ------------------ */
+        .help-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 5, 8, 0.98); backdrop-filter: blur(20px);
+            z-index: 100; display: none; padding: 0;
+            animation: slideIn 0.4s var(--transition);
+        }
+
+        @keyframes slideIn { from { opacity: 0; transform: scale(1.05); } to { opacity: 1; transform: scale(1); } }
+
+        .help-layout { display: flex; height: 100%; }
+        
+        .help-sidebar {
+            flex: 0 0 280px; border-right: 1px solid var(--border);
+            padding: 30px 20px; overflow-y: auto; display: flex; flex-direction: column;
+        }
+
+        .help-sidebar h3 { font-size: 0.7rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; padding-left: 10px; }
+
+        .cipher-nav-btn {
+            width: 100%; padding: 12px 15px; margin-bottom: 5px; background: transparent;
+            border: none; color: var(--text-dim); text-align: left; border-radius: 8px;
+            cursor: pointer; transition: 0.2s; font-size: 0.85rem;
+        }
+
+        .cipher-nav-btn:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .cipher-nav-btn.active { background: rgba(0, 242, 255, 0.1); color: var(--accent-cyan); font-weight: 600; }
+
+        .help-main { flex: 1; padding: 60px; position: relative; display: flex; flex-direction: column; justify-content: center; }
+
+        .close-btn {
+            position: absolute; top: 30px; right: 40px; cursor: pointer;
+            color: var(--text-dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+        }
+        .close-btn:hover { color: var(--accent-cyan); }
+
+        .detail-view { transition: 0.3s; }
+        .detail-view.fade { opacity: 0; transform: translateX(10px); }
+        .detail-title { font-size: 2rem; margin: 0 0 15px 0; color: #fff; }
+        .detail-desc { font-size: 0.95rem; line-height: 1.7; color: var(--text-dim); margin-bottom: 30px; max-width: 500px; }
+        .detail-usage { 
+            background: rgba(0, 242, 255, 0.05); border: 1px solid rgba(0, 242, 255, 0.2); 
+            padding: 20px; border-radius: 12px; position: relative; 
+        }
+        .detail-usage::before { 
+            content: "USAGE GUIDE"; position: absolute; top: -10px; left: 15px; 
+            background: var(--accent-cyan); color: #000; font-size: 0.6rem; 
+            font-weight: 800; padding: 2px 8px; border-radius: 3px; 
+        }
+        .detail-usage p { margin: 0; font-family: 'Fira Code', monospace; font-size: 0.85rem; color: var(--accent-cyan); }
+
+        /* ------------------ Mobile ------------------ */
+        @media (max-width: 800px) {
+            .app-container { flex-direction: column; height: auto; }
+            .sidebar { flex: none; width: 100%; padding: 40px 20px; }
+            .help-layout { flex-direction: column; }
+            .help-sidebar { flex: 0 0 auto; height: 180px; border-right: none; border-bottom: 1px solid var(--border); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Floating Help Panel -->
+        <div class="help-overlay" id="helpOverlay">
+            <div class="help-layout">
+                <div class="help-sidebar" id="helpList">
+                    <h3>Protocols</h3>
+                </div>
+                <div class="help-main">
+                    <span class="close-btn" onclick="toggleHelp()">[ Exit Intelligence Hub ]</span>
+                    <div id="detailView" class="detail-view">
+                        <div style="text-align: center; color: var(--text-dim);">
+                            <h2 style="color: #fff;">Intelligence Hub</h2>
+                            <p>Select a cipher protocol from the left to view technical specifications and usage instructions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="help-trigger" onclick="toggleHelp()">?</div>
+            <div class="logo-shield"><div class="logo-inner"><div class="logo-core"></div></div></div>
+            <h1 class="brand-name">SecuroCrypt</h1>
+            <div class="slogan">Where Data Meets Safety</div>
+        </div>
+
+        <!-- Main Workspace -->
+        <div class="main-workspace">
+            <div class="workspace-title">Encrypted Transmission Terminal</div>
+            <div class="input-group">
+                <label>Input Stream</label>
+                <textarea id="terminalInput" placeholder="Awaiting data packet..."></textarea>
+            </div>
+            <div class="input-group">
+                <label>Key / Shift</label>
+                <input type="text" id="terminalKey" class="key-input" placeholder="Variable key...">
+            </div>
+            <div class="input-group">
+                <label>Cipher Selection</label>
+                <select id="cipherSelect">
+                    <option>Caesar Cipher</option>
+                    <option>Monoalphabetic Cipher</option>
+                    <option>Polyalphabetic Cipher</option>
+                    <option>Vigenère Cipher</option>
+                    <option>Playfair Cipher</option>
+                    <option>Hill Cipher</option>
+                    <option>Rail Fence Cipher</option>
+                    <option>Transposition Cipher</option>
+                    <option>Columnar Transposition Cipher</option>
+                    <option>One-Time Pad</option>
+                    <option>Homophonic Cipher</option>
+                </select>
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary" onclick="execute('Encrypt')">Encrypt</button>
+                <button class="btn btn-secondary" onclick="execute('Decrypt')">Decrypt</button>
+            </div>
+            <div class="input-group">
+                <label>Processed Message</label>
+                <div class="output-screen" id="terminalOutput">_</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cipherIntelligence = {
+            "Caesar Cipher": {
+                desc: "A substitution cipher where each letter in the plaintext is replaced by a letter some fixed number of positions down the alphabet.",
+                usage: "Input a numeric value (0-25) in the Key field. For example, a key of 3 shifts 'A' to 'D'."
+            },
+            "Monoalphabetic Cipher": {
+                desc: "Uses a fixed substitution throughout the message. Every letter in the alphabet maps to exactly one unique character in a scrambled alphabet.",
+                usage: "Provide a 26-character scrambled alphabet (e.g., 'QWERTY...') as the key."
+            },
+            "Polyalphabetic Cipher": {
+                desc: "Employs multiple substitution alphabets to encrypt text. This defeats simple frequency analysis by changing the shift for each letter.",
+                usage: "Use a repeating keyword. The current letter of the keyword determines which alphabet shift is applied."
+            },
+            "Vigenère Cipher": {
+                desc: "The most famous polyalphabetic cipher. It uses a series of interwoven Caesar ciphers based on the letters of a keyword.",
+                usage: "Input a keyword (e.g., 'VAULT'). Each character of the keyword acts as a shift value for the corresponding plaintext letter."
+            },
+            "Playfair Cipher": {
+                desc: "A digraph substitution cipher that encrypts pairs of letters using a 5x5 matrix generated from a keyword.",
+                usage: "Use a keyword. Note: 'J' is typically merged with 'I'. Encrypts in 2-letter blocks based on grid coordinates."
+            },
+            "Hill Cipher": {
+                desc: "A polygraphic cipher based on linear algebra. It transforms blocks of letters using matrix multiplication modulo 26.",
+                usage: "The key must be a square invertible matrix. Enter as comma-separated values (e.g., 3,3,2,5 for a 2x2 matrix)."
+            },
+            "Rail Fence Cipher": {
+                desc: "A transposition cipher where characters are written in a zigzag pattern on imaginary 'rails' then read horizontally.",
+                usage: "Input an integer as the key, representing the number of rails. 2 or 3 rails are common starting points."
+            },
+            "Transposition Cipher": {
+                desc: "Keeps the original characters of the message but scrambles their positions based on a specific permutation rule.",
+                usage: "Define a fixed mapping sequence (like 3-1-4-2) to rearrange blocks of the plaintext."
+            },
+            "Columnar Transposition Cipher": {
+                desc: "Text is written in rows of a fixed width and then columns are read out in a permuted order determined by a keyword.",
+                usage: "Input a keyword. The alphabetical order of the keyword's letters defines the order in which columns are extracted."
+            },
+            "One-Time Pad": {
+                desc: "The only theoretically unbreakable cipher. It requires a truly random key that is as long as the message.",
+                usage: "The key must be random, secret, and used exactly once. It must be at least as long as the input text."
+            },
+            "Homophonic Cipher": {
+                desc: "Designed to defeat frequency analysis by mapping high-frequency letters (like 'E') to multiple possible cipher symbols.",
+                usage: "Requires a mapping table. Use one of the multiple allowed symbols for each letter to randomize frequency distribution."
+            }
+        };
+
+        const helpOverlay = document.getElementById('helpOverlay');
+        const helpList = document.getElementById('helpList');
+        const detailView = document.getElementById('detailView');
+
+        Object.keys(cipherIntelligence).forEach(name => {
+            const btn = document.createElement('button');
+            btn.className = 'cipher-nav-btn';
+            btn.innerText = name;
+            btn.onclick = () => showDetail(name, btn);
+            helpList.appendChild(btn);
+        });
+
+        function toggleHelp() {
+            helpOverlay.style.display = (helpOverlay.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function showDetail(name, btn) {
+            document.querySelectorAll('.cipher-nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            detailView.classList.add('fade');
+            setTimeout(() => {
+                const data = cipherIntelligence[name];
+                detailView.innerHTML = `
+                    <h2 class="detail-title">${name}</h2>
+                    <p class="detail-desc">${data.desc}</p>
+                    <div class="detail-usage"><p>${data.usage}</p></div>
+                `;
+                detailView.classList.remove('fade');
+            }, 200);
+        }
+
+        async function execute(mode) {
+            const input = document.getElementById('terminalInput').value;
+            const key = document.getElementById('terminalKey').value;
+            const cipher = document.getElementById('cipherSelect').value;
+            const output = document.getElementById('terminalOutput');
+
+            if (!input) {
+                output.innerText = "> Error: No input detected.";
+                return;
+            }
+
+            output.innerText = `> Connecting to processing node...`;
+
+            try {
+                const response = await fetch('/process', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: input, key: key, cipher: cipher, mode: mode })
+                });
+                
+                const result = await response.json();
+                if (result.error) {
+                    output.innerText = `> SYSTEM ERROR: ${result.error}`;
+                } else {
+                    output.innerText = result.result;
+                }
+            } catch (err) {
+                output.innerText = "> FATAL ERROR: CONNECTION TIMEOUT";
+            }
+        }
+
+        window.onkeydown = function(e) {
+            if (e.key === "Escape") helpOverlay.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
